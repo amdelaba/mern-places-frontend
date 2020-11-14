@@ -7,6 +7,10 @@ const formReducer = (state, action) => {
     case 'INPUT_CHANGE':
       let formIsValid = true;
       for (const inputId in state.inputs) {
+        // if input is undefines (eg username in Loging form)
+        if (!state.inputs[inputId]){
+          continue;
+        }
         if (inputId === action.inputId) {
           formIsValid = formIsValid && action.isValid
         } else {

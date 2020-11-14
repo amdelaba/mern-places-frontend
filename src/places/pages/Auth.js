@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import Input from '../../shared/components/FormElements/Input';
 import Button from '../../shared/components/FormElements/Button'
@@ -10,7 +10,9 @@ import Card from '../../shared/components/UIElements/Card';
 
 const Auth = props => {
 
-  const [formState, inputHandler] = useForm({
+  const [isLoginMode, setIsLoginMode] = useState(true);
+
+  const [formState, inputHandler, setFormData] = useForm({
     email: {
       value: '',
       isValid: false,
@@ -22,15 +24,44 @@ const Auth = props => {
   },
   false);
 
-  const placeSubmitHandler = event => {
+  const switchModeHandler = () => {
+    if (!isLoginMode) {
+      setFormData({
+        ...formState.inputs,
+        name: undefined
+      },formState.inputs.email.isValid && formState.inputs.password.isValid )
+    } else {
+      setFormData({
+        ...formState.inputs,
+        name: {
+          value: '',
+          isValid: false
+        }
+      }, false)
+    }
+    setIsLoginMode(prevMode => !prevMode)
+  };
+
+  const authSubmitHandler = event => {
     event.preventDefault();
     console.log(formState.inputs)
   };
 
   return  (
     <Card className="authentication">
-      <form className="place-form" onSubmit={placeSubmitHandler}>
-
+      <form className="place-form" onSubmit={authSubmitHandler}>
+        {
+         !isLoginMode &&
+          <Input 
+            id="name"
+            element="input" 
+            type="text"
+            label="Username"
+            validators={[VALIDATOR_REQUIRE()]}
+            errorText="Please Enter a Name"
+            onInput={inputHandler}
+          />
+        }
         <Input 
           id="email"
           element="input" 
@@ -51,9 +82,12 @@ const Auth = props => {
           />
 
         <Button type="submit" disabled={!formState.isValid}>
-          LOGIN
+          {isLoginMode ? 'LOGIN' : 'SIGNUP'}
         </Button>
       </form>
+      <Button inverse onClick={switchModeHandler}>
+        SWITCH TO { isLoginMode ? 'SIGNUP' : 'LOGIN' }
+      </Button>
     </Card>
 
   );
