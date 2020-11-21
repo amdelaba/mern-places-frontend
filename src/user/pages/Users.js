@@ -1,12 +1,52 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+
 import UsersList from '../components/UsersList';
+import ErrorModal from '../../shared/components/UIElements/ErrorModal';
+import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 
 const Users = () => {
-  const USERS = [
-    {id: 'u1', name: 'Andres', image: 'https://www.agora-gallery.com/advice/wp-content/uploads/2015/10/image-placeholder.png', places: 3}
-  ];
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState();
+  const [loadedUsers, setLoadedUsers] = useState();
+
+  useEffect( () => {
+    const sendRequest = async () => {
+      setIsLoading(true);
+
+      try {
+        const response = await fetch('http://localhost:5000/api/users');
+        const responseData = await response.json();
+        console.log(responseData);
+        if (!response.ok){
+          console.log(response);
+          throw new Error(responseData.message);
+        }
+        setLoadedUsers(responseData.users);
+      } catch(err) {
+        setError(err.message)
+      }
+      setIsLoading(false);
+    }
+    sendRequest();
+  }, []);
+
+  const clearErrorHandler = () => {
+    setError(null);
+  };
+  
   return (
-    <UsersList items={USERS}/>
+    <React.Fragment>
+      <ErrorModal error={error} onClear={clearErrorHandler} />
+      {isLoading && (
+        <div className="center">
+          <LoadingSpinner/>
+        </div>
+      )}
+      { !isLoading && loadedUsers && <UsersList items={loadedUsers}/> }
+    
+    </React.Fragment>
+    
   );
 };
 
