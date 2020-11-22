@@ -9,6 +9,7 @@ import Card from '../../shared/components/UIElements/Card';
 import ErrorModal from '../../shared/components/UIElements/ErrorModal';
 import LoadingSpinner from '../../shared/components/UIElements/LoadingSpinner';
 import { useHttpClient } from '../../shared/hooks/http-hook';
+import ImageUpload from '../../shared/components/FormElements/ImageUpload';
 
 import './Auth.css';
 
@@ -34,13 +35,18 @@ const Auth = props => {
     if (!isLoginMode) {
       setFormData({
         ...formState.inputs,
-        name: undefined
+        name: undefined,
+        image: undefined
       },formState.inputs.email.isValid && formState.inputs.password.isValid )
     } else {
       setFormData({
         ...formState.inputs,
         name: {
           value: '',
+          isValid: false,
+        },
+        image: {
+          value: null,
           isValid: false
         }
       }, false)
@@ -50,6 +56,7 @@ const Auth = props => {
 
   const authSubmitHandler = async event => {
     event.preventDefault();
+    console.log(formState.inputs)
     if(isLoginMode){
       // LOGIN
       try {
@@ -106,6 +113,9 @@ const Auth = props => {
               errorText="Please Enter a Name"
               onInput={inputHandler}
             />
+          }
+          {!isLoginMode &&
+            <ImageUpload id='image' center onInput={inputHandler} errorText='An Error Happened'/>
           }
           <Input 
             id="email"
