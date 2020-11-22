@@ -112,7 +112,7 @@ const Auth = props => {
             element="input" 
             type="email"
             label="Email"
-            validators={[VALIDATOR_MINLENGTH(6), VALIDATOR_EMAIL()]}
+            validators={[VALIDATOR_EMAIL()]}
             errorText="Please Enter a Valid Email. Minimum 6 characters"
             onInput={inputHandler}
             />
@@ -121,8 +121,8 @@ const Auth = props => {
             element="input" 
             label="password"
             type="password"
-            validators={[VALIDATOR_MINLENGTH(5)]}
-            errorText="Please Enter a Valid Password. Minimum 5 characters"
+            validators={[VALIDATOR_MINLENGTH(6)]}
+            errorText="Please Enter a Valid Password. Minimum 6 characters"
             onInput={inputHandler}
             />
 

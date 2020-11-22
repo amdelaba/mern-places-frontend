@@ -32,6 +32,7 @@ const NewPlace = () => {
   }, false);
 
   const history = useHistory();
+
   const placeSubmitHandler = async event => {
     event.preventDefault();
     console.log(formState.inputs);
@@ -50,6 +51,7 @@ const NewPlace = () => {
           'Content-Type': 'application/json'
         }
       );
+      console.log(responseData);
       // Redirect user to home
       // push adds a page to the stack in order to let user go back
       history.push('/');
