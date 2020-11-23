@@ -69,12 +69,12 @@ const UpdatePlace = props => {
           description: formState.inputs.description.value,
         }),
         {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + auth.token
         }
       );
       console.log(responseData);
       history.push(`/${auth.userId}/places`);
-
     } catch(err) {
       console.log(err); 
     }
