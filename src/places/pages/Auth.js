@@ -115,7 +115,12 @@ const Auth = props => {
             />
           }
           {!isLoginMode &&
-            <ImageUpload id='image' center onInput={inputHandler} errorText='An Error Happened'/>
+            <ImageUpload 
+              id='image' 
+              center 
+              onInput={inputHandler} 
+              errorText= 'Please provide an image'
+            />
           }
           <Input 
             id="email"
